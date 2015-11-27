@@ -28,7 +28,6 @@
 (:predicates 
 	(at ?x - (either person lift) ?f - floor)
 	(in ?p – person ?l - lift)
-	(desire ?p - person ?f - floor)
 )
 
 
@@ -71,7 +70,7 @@
 	:duration (= ?duration (- (number ?f1) (number ?f2)))
 	:condition (and
 					(at start (at ?l ?f1))
-					(at start (<> (number ?f1) (number ?f2)))
+					;(at start (<> (number ?f1) (number ?f2)))
 				)
 	:effect (and
 		(at end (not (at ?l ?f1)))
