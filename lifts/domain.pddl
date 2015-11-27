@@ -27,7 +27,7 @@
 
 (:predicates 
 	(at ?x - (either person lift) ?f - floor)
-	(in ?p – person ?l - lift)
+	(in ?p - person ?l - lift)
 )
 
 
@@ -55,14 +55,18 @@
 )
 
 (:durative-action exit
-	:parameters (?p - person ?l - lift ?f - floor)
+	:parameters (?p - person ?l - lift ?fl ?fp - floor)
 	:duration (= ?duration 1)
 	:condition (and
-					(at start (at ?p ?f))
-					(at start (at ?l ?f))
+					(at start (at ?l ?fl))
+					(at start (at ?p ?fp))
 					(at start (in ?p ?l))
 				)
-	:effect (at end (not (in ?p ?l)))
+	:effect (and
+				(at end (not (in ?p ?l)))
+				(at end (not (at ?p ?fp)))
+				(at end (at ?p ?fl))
+			)
 )
 
 (:durative-action move
