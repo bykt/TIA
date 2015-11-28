@@ -69,12 +69,27 @@
 			)
 )
 
-(:durative-action move
+(:durative-action move-up
 	:parameters (?l - lift ?f1 ?f2 - floor)
-	:duration (= ?duration (- (number ?f1) (number ?f2)))
+	:duration (= ?duration (* 2 (- (number ?f2) (number ?f1))))
+	;:duration (= ?duration 5)
 	:condition (and
 					(at start (at ?l ?f1))
-					;(at start (<> (number ?f1) (number ?f2)))
+					(at start (< (number ?f1) (number ?f2)))
+				)
+	:effect (and
+		(at end (not (at ?l ?f1)))
+		(at end (at ?l ?f2))
+	)
+)
+
+(:durative-action move-down
+	:parameters (?l - lift ?f1 ?f2 - floor)
+	:duration (= ?duration (* 2 (- (number ?f1) (number ?f2))))
+	;:duration (= ?duration 5)
+	:condition (and
+					(at start (at ?l ?f1))
+					(at start (> (number ?f1) (number ?f2)))
 				)
 	:effect (and
 		(at end (not (at ?l ?f1)))
