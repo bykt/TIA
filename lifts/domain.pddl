@@ -28,6 +28,8 @@
 (:predicates 
 	(at ?x - (either person lift) ?f - floor)
 	(in ?p - person ?l - lift)
+	(up ?f1 ?f2 - floor)
+	(down ?f1 ?f2 - floor)
 )
 
 
@@ -49,50 +51,49 @@
 	:duration (= ?duration 1)
 	:condition (and
 					(at start (at ?p ?f))
-					(at start (at ?l ?f))
+					(over all (at ?l ?f))
 				)
-	:effect (at end (in ?p ?l))
+	:effect (and 
+				(at start (in ?p ?l))
+				(at start (not (at ?p ?f)))
+			)
 )
 
 (:durative-action exit
-	:parameters (?p - person ?l - lift ?fl ?fp - floor)
+	:parameters (?p - person ?l - lift ?f - floor)
 	:duration (= ?duration 1)
 	:condition (and
-					(at start (at ?l ?fl))
-					(at start (at ?p ?fp))
+					(over all (at ?l ?f))
 					(at start (in ?p ?l))
 				)
 	:effect (and
-				(at end (not (in ?p ?l)))
-				(at end (not (at ?p ?fp)))
-				(at end (at ?p ?fl))
+				(at start (not (in ?p ?l)))
+				(at start (at ?p ?f))
 			)
 )
 
 (:durative-action move-up
 	:parameters (?l - lift ?f1 ?f2 - floor)
-	:duration (= ?duration (* 2 (- (number ?f2) (number ?f1))))
-	;:duration (= ?duration 5)
+	:duration (= ?duration 2)
 	:condition (and
 					(at start (at ?l ?f1))
-					(at start (< (number ?f1) (number ?f2)))
+					(over all (up ?f1 ?f2))
 				)
 	:effect (and
-		(at end (not (at ?l ?f1)))
+		(at start (not (at ?l ?f1)))
 		(at end (at ?l ?f2))
 	)
 )
 
 (:durative-action move-down
 	:parameters (?l - lift ?f1 ?f2 - floor)
-	:duration (= ?duration (* 2 (- (number ?f1) (number ?f2))))
-	;:duration (= ?duration 5)
+	:duration (= ?duration 2)
 	:condition (and
 					(at start (at ?l ?f1))
-					(at start (> (number ?f1) (number ?f2)))
+					(over all (down ?f1 ?f2))
 				)
 	:effect (and
-		(at end (not (at ?l ?f1)))
+		(at start (not (at ?l ?f1)))
 		(at end (at ?l ?f2))
 	)
 )
